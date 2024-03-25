@@ -1,0 +1,37 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# crash-data-vis-demo
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of crash-data-vis-demo is to demonstrate how to get and visualise data on road traffic casualties and road geometries.
+
+```{r}
+# Install the remotes package if not yet installed:
+if (!"remotes" %in% installed.packages()) {
+  install.packages("remotes")
+}
+```
+
+```{r}
+# Check you have the packages installed:
+remotes::install_cran(c("tidyverse", "stats19"))
+```
+
+```{r}
+library(tidyverse) # for data manipulation and visualisation
+library(stats19) # for getting road casualty data
+```
+
