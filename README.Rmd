@@ -33,5 +33,60 @@ remotes::install_cran(c("tidyverse", "stats19"))
 ```{r}
 library(tidyverse) # for data manipulation and visualisation
 library(stats19) # for getting road casualty data
+library(tmap)
+tmap_mode("view")
 ```
+
+# Get road casualty data
+
+```{r}
+# Get road casualty data for 2022
+cas = get_stats19(year = 2022, type = "cas")
+col = get_stats19(year = 2022, type = "col")
+```
+
+If you want to get more data, you can change 2022 to 1979, which downloads all data from 1979 to the last year for which data is available.
+
+We'll get the data for Edinburgh as follows:
+
+```{r}
+names(col)
+table(col$police_force)
+```
+
+```{r}
+col_scotland = col |> 
+  filter(str_detect(police_force, "Scotland"))
+```
+
+Let's get a case study area:
+
+```{r}
+edinburgh_boundary = zonebuilder::zb_zone("Edinburgh", n_circles = 2)
+```
+
+We'll convert the collisions to `sf` objects so we can do a spatial join:
+
+```{r}
+col_sf = format_sf(col_scotland, lonlat = TRUE)
+```
+
+Now we can do a spatial filter:
+
+```{r}
+col_edinburgh = col_sf[edinburgh_boundary, ]
+```
+
+We can now plot these on a map:
+
+
+```{r}
+tm_shape(col_edinburgh) +
+  tm_dots(col = "accident_severity", size = 0.1) +
+  tm_layout(legend.position = c("left", "bottom"))
+
+```
+
+
+
 
